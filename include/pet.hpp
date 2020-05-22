@@ -17,11 +17,10 @@ public:
     // pet_t() = delete;
 
     // parameterized constructor
-    pet_t
-        (
+    pet_t(
         uint64_t const _id, 
         eosio::name const & _owner, 
-        eosio::name const &  _pet_name, 
+        eosio::name const & _pet_name, 
         uint64_t const _age, 
         eosio::name const & _type
         ) : id(_id), owner(_owner), pet_name(_pet_name), age(_age), type(_type) {} 
