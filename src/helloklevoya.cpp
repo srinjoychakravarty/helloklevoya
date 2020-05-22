@@ -19,3 +19,24 @@ void helloklevoya::addpet(uint64_t const _id, eosio::name const & _owner, eosio:
     entry = pet_t(_id, _owner, _pet_name, _age, _type);
   });
 }
+
+void helloklevoya::updatepet(uint64_t const _id, eosio::name const & _owner, eosio::name const &  _pet_name, uint64_t const _age, eosio::name const & _type)
+{
+  pets_table pets(get_self(), get_self().value);
+
+  // searches table for id (primary key)
+  auto pet_iterator = pets.find(_id);
+
+  // if found iterator id from pets table is passed in as additional first argument
+  pets.modify(pet_iterator, get_self(), [&](auto & entry) 
+  {
+    entry = pet_t(_id, _owner, _pet_name, _age, _type);
+  });       
+}
+
+void helloklevoya::deletepet(uint64_t const _id)
+{
+  pets_table pets(get_self(), get_self().value);
+  auto pet_iterator = pets.find(_id);
+  pets.erase(pet_iterator);
+}

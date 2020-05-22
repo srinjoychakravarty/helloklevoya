@@ -30,6 +30,16 @@
             ]
         },
         {
+            "name": "deletepet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "_id",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
             "name": "hi",
             "base": "",
             "fields": [
@@ -64,6 +74,32 @@
                     "type": "name"
                 }
             ]
+        },
+        {
+            "name": "updatepet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "_id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "_owner",
+                    "type": "name"
+                },
+                {
+                    "name": "_pet_name",
+                    "type": "name"
+                },
+                {
+                    "name": "_age",
+                    "type": "uint64"
+                },
+                {
+                    "name": "_type",
+                    "type": "name"
+                }
+            ]
         }
     ],
     "actions": [
@@ -73,8 +109,18 @@
             "ricardian_contract": ""
         },
         {
+            "name": "deletepet",
+            "type": "deletepet",
+            "ricardian_contract": ""
+        },
+        {
             "name": "hi",
             "type": "hi",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "updatepet",
+            "type": "updatepet",
             "ricardian_contract": ""
         }
     ],
