@@ -26,6 +26,9 @@ void helloklevoya::updatepet(uint64_t const _id, eosio::name const & _owner, eos
   // searches table for id (primary key)
   auto pet_iterator = pets.find(_id);
 
+  // ensures pet exists in table before allowing update
+  eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be updated");
+
   // allows the actual owner of the pet to update
   require_auth(pet_iterator -> get_owner());
 
@@ -40,6 +43,7 @@ void helloklevoya::deletepet(uint64_t const _id)
 {
   pets_table pets(get_self(), get_self().value);
   auto pet_iterator = pets.find(_id);
+  eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be deleted");
   require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
 }
