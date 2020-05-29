@@ -1,10 +1,5 @@
 #include "helloklevoya.hpp"
 
-void helloklevoya::hi(eosio::name const & nm)
-{
-  eosio::print("Hello ", nm);
-}
-
 void helloklevoya::addpet(uint64_t const _id, eosio::name const & _owner, eosio::name const & _pet_name, uint64_t const _age, eosio::name const & _type)
 {
 
@@ -31,6 +26,9 @@ void helloklevoya::updatepet(uint64_t const _id, eosio::name const & _owner, eos
   // searches table for id (primary key)
   auto pet_iterator = pets.find(_id);
 
+  // allows the actual owner of the pet to update
+  require_auth(pet_iterator -> get_owner());
+
   // if found iterator id from pets table is passed in as additional first argument
   pets.modify(pet_iterator, get_self(), [&](auto & entry) 
   {
@@ -42,5 +40,6 @@ void helloklevoya::deletepet(uint64_t const _id)
 {
   pets_table pets(get_self(), get_self().value);
   auto pet_iterator = pets.find(_id);
+  require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
 }

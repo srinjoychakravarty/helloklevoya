@@ -40,16 +40,6 @@
             ]
         },
         {
-            "name": "hi",
-            "base": "",
-            "fields": [
-                {
-                    "name": "nm",
-                    "type": "name"
-                }
-            ]
-        },
-        {
             "name": "pet_t",
             "base": "",
             "fields": [
@@ -111,11 +101,6 @@
         {
             "name": "deletepet",
             "type": "deletepet",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "hi",
-            "type": "hi",
             "ricardian_contract": ""
         },
         {
