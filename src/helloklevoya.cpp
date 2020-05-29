@@ -1,4 +1,4 @@
-#include <helloklevoya.hpp>
+#include "helloklevoya.hpp"
 
 void helloklevoya::hi(eosio::name const & nm)
 {
@@ -7,6 +7,10 @@ void helloklevoya::hi(eosio::name const & nm)
 
 void helloklevoya::addpet(uint64_t const _id, eosio::name const & _owner, eosio::name const & _pet_name, uint64_t const _age, eosio::name const & _type)
 {
+
+  // only authorized user can modify their own pet
+  require_auth(_owner);
+  
   // Type: custom eos table > pets_table 
   // Table Name: pets
   // 1st Param: table in current smart contract 

@@ -1,8 +1,8 @@
 #ifndef HELLOKLEVOYA
 #define HELLOKLEVOYA
 
-#include <eosio/eosio.hpp>
-#include <pet.hpp>
+#include "eosio/eosio.hpp"
+#include "pet.hpp"
 
 CONTRACT helloklevoya : public eosio::contract
 {
