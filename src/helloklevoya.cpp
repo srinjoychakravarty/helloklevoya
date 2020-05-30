@@ -55,3 +55,12 @@ void helloklevoya::deletepet(uint64_t const _id)
   require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
 }
+void helloklevoya::listpet(uint64_t const _id)
+{
+  pets_table pets(get_self(), get_self().value);
+  auto pet_iterator = pets.find(_id);
+  eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be deleted");
+  require_auth(pet_iterator -> get_owner());
+  eosio::print("Pet ID: ", _id, " belongs to ", pet_iterator -> get_pet_name(), " who is a ", pet_iterator -> get_type(), "aged ", pet_iterator -> get_age(), "!");
+}
+ACTION ownedpets(eosio::name const & _owner);
