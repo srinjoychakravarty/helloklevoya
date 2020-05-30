@@ -28,6 +28,7 @@ public:
     // getters
     uint64_t get_id() const {return id;}
     eosio::name get_owner() const {return owner;}
+    uint64_t get_owner_int_reprsnt() const {return owner.value;}
     eosio::name get_pet_name() const {return pet_name;}
     uint64_t get_age() const {return age;}
     eosio::name get_type() const {return type;} 
@@ -39,8 +40,9 @@ public:
     EOSLIB_SERIALIZE(pet_t, (id)(owner)(pet_name)(age)(type))
 };
 
-    typedef eosio::multi_index <"pets"_n, pet_t> pets_table;
-    // typedef eosio::multi_index <eosio::name("pets"), pet_t> pets_table;
+    // eosio::indexed_by <"secondaryindex_identifier", eosio::const_mem_fun<datastructure_used, return_type(must be converted to 64bit int), int_conversion_functioname >
+    typedef eosio::multi_index <"pets"_n, pet_t, eosio::indexed_by<"bypetowner"_n, eosio::const_mem_fun<pet_t, uint64_t, &pet_t::get_owner_int_reprsnt>>> pets_table;
+
 
 
 #endif
