@@ -55,12 +55,29 @@ void helloklevoya::deletepet(uint64_t const _id)
   require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
 }
+
 void helloklevoya::listpet(uint64_t const _id)
 {
   pets_table pets(get_self(), get_self().value);
   auto pet_iterator = pets.find(_id);
-  eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be deleted");
+  eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be displayed");
   require_auth(pet_iterator -> get_owner());
-  eosio::print("Pet ID: ", _id, " belongs to ", pet_iterator -> get_pet_name(), " who is a ", pet_iterator -> get_type(), "aged ", pet_iterator -> get_age(), "!");
+  eosio::print("Pet ID: ", _id, " belongs to ", pet_iterator -> get_pet_name(), " who is a ", pet_iterator -> get_type(), " pokémon aged ", pet_iterator -> get_age(), "!");
 }
-ACTION ownedpets(eosio::name const & _owner);
+
+void helloklevoya::ownedpetsby(eosio::name const & _owner)
+{
+  require_auth(_owner);
+  pets_table pets(get_self(), get_self().value);
+  // use secondary index to sort table by owner
+  auto pets_by_owner = pets.get_index<"bypetowner"_n>();
+  // find iterator for first pet by owner's 64 bit integer value (inclusive)
+  auto first_pet_iterator = pets_by_owner.lower_bound(_owner.value); 
+  // iterator goes past last pet memory location belonging to owner
+  auto last_pet_iterator = pets_by_owner.upper_bound(_owner.value); 
+  // for loop print pets for all pet memory locations belonging to owner
+  for(auto i = first_pet_iterator; i != last_pet_iterator; ++i)
+  {
+    eosio::print( _owner, " trains ", i -> get_type(), " pokémon ",  i -> get_pet_name(), "\n");
+  } 
+}

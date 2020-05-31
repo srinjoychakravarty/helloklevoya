@@ -40,27 +40,47 @@
             ]
         },
         {
+            "name": "listpet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "_id",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "ownedpetsby",
+            "base": "",
+            "fields": [
+                {
+                    "name": "_owner",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "pet_t",
             "base": "",
             "fields": [
                 {
-                    "name": "id",
+                    "name": "_id",
                     "type": "uint64"
                 },
                 {
-                    "name": "owner",
+                    "name": "_owner",
                     "type": "name"
                 },
                 {
-                    "name": "pet_name",
+                    "name": "_pet_name",
                     "type": "name"
                 },
                 {
-                    "name": "age",
+                    "name": "_age",
                     "type": "uint64"
                 },
                 {
-                    "name": "type",
+                    "name": "_type",
                     "type": "name"
                 }
             ]
@@ -101,6 +121,16 @@
         {
             "name": "deletepet",
             "type": "deletepet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "listpet",
+            "type": "listpet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "ownedpetsby",
+            "type": "ownedpetsby",
             "ricardian_contract": ""
         },
         {

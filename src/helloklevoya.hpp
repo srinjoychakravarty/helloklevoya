@@ -25,6 +25,6 @@ CONTRACT helloklevoya : public eosio::contract
 
     ACTION listpet(uint64_t const _id);
 
-    ACTION ownedpets(eosio::name const & _owner);
+    ACTION ownedpetsby(eosio::name const & _owner);
 };
 #endif
