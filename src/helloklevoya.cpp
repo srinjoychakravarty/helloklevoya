@@ -2,7 +2,6 @@
 
 void helloklevoya::addpet(uint64_t const _id, eosio::name const & _owner, eosio::name const & _pet_name, uint64_t const _age, eosio::name const & _type)
 {
-
   // only authorized user can modify their own pet
   require_auth(_owner);
   
@@ -54,6 +53,24 @@ void helloklevoya::deletepet(uint64_t const _id)
   eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be deleted");
   require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
+}
+
+void helloklevoya::purgepets(eosio::name const & _owner)
+{
+  // get pets table with global context
+  pets_table pets(get_self(), get_self().value);
+  // use secondary index to sort pets by owner
+  auto pet_of_owner_index = pets.get_index<"bypetowner"_n>();
+  // use a c++ iterator to find first instance of pet belonging to owner
+  auto iterator = pet_of_owner_index.find(_owner.value);
+  // while loop to iterate through all pets belonging to owner
+  while(iterator != pet_of_owner_index.end())
+  {
+    // delete reference to current pet
+   pet_of_owner_index.erase(iterator);
+   // move to next pet of owner
+   iterator = pet_of_owner_index.find(_owner.value);
+  }
 }
 
 void helloklevoya::listpet(uint64_t const _id)

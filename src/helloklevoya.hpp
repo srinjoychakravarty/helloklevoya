@@ -23,6 +23,8 @@ CONTRACT helloklevoya : public eosio::contract
     
     ACTION deletepet(uint64_t const _id);
 
+    ACTION purgepets(eosio::name const & _owner);
+
     ACTION listpet(uint64_t const _id);
 
     ACTION ownedpetsby(eosio::name const & _owner);
