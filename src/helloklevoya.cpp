@@ -23,6 +23,9 @@ void helloklevoya::addpet(uint64_t const _id, eosio::name const & _owner, eosio:
   {
     entry = pet_t(_id, _owner, _pet_name, _age, _type);
   });
+
+  // trigger inline function to notify user
+  event_summary(_owner, "added pet successfully!");
 }
 
 void helloklevoya::updatepet(uint64_t const _id, eosio::name const & _owner, eosio::name const &  _pet_name, uint64_t const _age, eosio::name const & _type)
@@ -43,7 +46,9 @@ void helloklevoya::updatepet(uint64_t const _id, eosio::name const & _owner, eos
   pets.modify(pet_iterator, get_self(), [&](auto & entry) 
   {
     entry = pet_t(_id, _owner, _pet_name, _age, _type);
-  });       
+  });
+
+  event_summary(_owner, "updated pet successfully!");       
 }
 
 void helloklevoya::deletepet(uint64_t const _id)
@@ -53,6 +58,7 @@ void helloklevoya::deletepet(uint64_t const _id)
   eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be deleted");
   require_auth(pet_iterator -> get_owner());
   pets.erase(pet_iterator);
+  event_summary(_owner, "deleted specified pet successfully!");
 }
 
 void helloklevoya::purgepets(eosio::name const & _owner)
@@ -71,6 +77,20 @@ void helloklevoya::purgepets(eosio::name const & _owner)
    // move to next pet of owner
    iterator = pet_of_owner_index.find(_owner.value);
   }
+
+  event_summary(_owner, "purged all owned pets successfully!");
+}
+
+// _user is the original caller of the initial action which in turn contains this inline action
+void helloklevoya::notify(eosio::name const & _user, std::string _message)
+{
+  // this action should only be able to be called from inside this contract
+  require_auth(get_self());
+
+  // receipt goes to original caller to warn them about this inline action and prevent security 
+  // threat of thousands of cascading inline actions being triggered unbeknownst to the user
+  require_recipient(_user);
+
 }
 
 void helloklevoya::listpet(uint64_t const _id)
@@ -80,6 +100,7 @@ void helloklevoya::listpet(uint64_t const _id)
   eosio::check(pet_iterator != pets.end(), "Non-existant Pet ID can't be displayed");
   require_auth(pet_iterator -> get_owner());
   eosio::print("Pet ID: ", _id, " belongs to ", pet_iterator -> get_pet_name(), " who is a ", pet_iterator -> get_type(), " pokémon aged ", pet_iterator -> get_age(), "!");
+  event_summary(_owner, "listed specified pet successfully!");
 }
 
 void helloklevoya::ownedpetsby(eosio::name const & _owner)
@@ -97,4 +118,5 @@ void helloklevoya::ownedpetsby(eosio::name const & _owner)
   {
     eosio::print( _owner, " trains ", i -> get_type(), " pokémon ",  i -> get_pet_name(), "\n");
   } 
+  event_summary(_owner, "listed all owned pets successfully!");
 }

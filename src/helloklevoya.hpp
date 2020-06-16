@@ -28,5 +28,7 @@ CONTRACT helloklevoya : public eosio::contract
     ACTION listpet(uint64_t const _id);
 
     ACTION ownedpetsby(eosio::name const & _owner);
+
+    ACTION notify(eosio::name const & _user, std::string _message);
 };
 #endif

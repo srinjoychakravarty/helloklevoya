@@ -11,6 +11,24 @@ private:
     uint64_t _age;
     eosio::name _type;
 
+    // standard function to construct inline action
+    void event_summary(eosio::name caller, std::string msg)
+    {
+        // action with 4 arguments being prepared
+        action
+        (
+            // active permission of contract itself used as permission level
+            permission_level{get_self(), "active"_n},
+            // push the action to "this" contract location or a different contract name
+            get_self(),
+            // name of inline action to forward this construction to
+            "notify"_n,
+            // tuple of caller and msg
+            std::make_tuple(caller, msg)
+        ).send();
+    }
+
+
 public:    
     // default constructor
     pet_t(){}
